@@ -1,0 +1,21 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+<body>
+    <div class="w3-row-padding menu">
+        <div class="w3-third">
+            <select class="w3-select choose-city" name="option">
+                <option value="" disabled selected>Выберите город</option>
+                <option value="1">Санкт-Петербург</option>
+                <option value="2">Москва</option>
+                <option value="3">Челябинск</option>
+            </select>
+        </div>
+        <div class="w3-third">        	
+            <input type="date" class="form-control calendar" id="date" name="date" placeholder="Дата" required>
+        </div>
+    </div>
+    <button type="button" class="btn btn-success btn-lg btn-block">Показать статистику</button>
+</body>
+{% endblock content %}
+
