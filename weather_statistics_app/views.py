@@ -23,8 +23,8 @@ def index(request):
         userform = UserForm()
         return render(request, "index.html", {"form": userform})
 
-def index(request):
-    return render(request, 'index.html')
+# def index(request):
+#     return render(request, 'index.html')
 
 def make_statistics(city: str, period_start: datetime, period_end: datetime):
     
