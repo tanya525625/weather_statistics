@@ -17,7 +17,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     precipation_list = []
     
     for year in range(period_start.year, period_end.year + 1):
-        filename = '.\\' + city + '\\' + str(year) + '.csv'
+        filename = '\\' + city + '\\' + str(year) + '.csv'
         print(filename)
         opened_file = open(filename)
         file_content = opened_file.readlines()
@@ -33,7 +33,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
                 curr_date = date_without_time_list[1]
             curr_date = str(curr_date).replace(' ', '').replace('[', '')
   
-            curr_date_datetime = make_datetime_with_dot(curr_date)
+            curr_date_datetime = make_datetime(curr_date)
             if curr_date_datetime.day >= period_start.day and curr_date_datetime.month >= period_start.month and \
                 curr_date_datetime.day <= period_end.day and curr_date_datetime.month <= period_end.month:
                 #temperature_information
@@ -93,17 +93,13 @@ def make_datetime(date: str):
     date_list = date.split('-')
     return datetime.datetime(int(date_list[0]), int(date_list[1]), int(date_list[2]))
 
-def make_datetime_with_dot(date: str):
-    date_list = date.split('.')
-    return datetime.datetime(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-
 def make_float_from_str(data):
     if data[0] == '-': # if negative temperature
         return float(data.replace(',', '.').strip("-")) * (-1)
     return float(data.replace(',', '.'))
 
 
-test = "2019-06-01"
+test = "2019-07-01"
 test2 = "2019-07-03"
 data1 = make_datetime(test)
 data2 = make_datetime(test2)
