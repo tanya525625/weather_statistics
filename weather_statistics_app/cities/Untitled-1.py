@@ -18,6 +18,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     
     for year in range(period_start.year, period_end.year + 1):
         filename = '.\\' + city + '\\' + str(year) + '.csv'
+        print(filename)
         opened_file = open(filename)
         file_content = opened_file.readlines()
         opened_file.close()
@@ -89,8 +90,8 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
 
     
 def make_datetime(date: str):
-    date_list = date.split('.')
-    return datetime.datetime(int(date_list[2]), int(date_list[1]), int(date_list[0]))
+    date_list = date.split('-')
+    return datetime.datetime(int(date_list[0]), int(date_list[1]), int(date_list[2]))
 
 def make_float_from_str(data):
     if data[0] == '-': # if negative temperature
@@ -98,10 +99,10 @@ def make_float_from_str(data):
     return float(data.replace(',', '.'))
 
 
-test = "01.01.2010"
-test2 = "31.12.2019"
+test = "2018-07-01"
+test2 = "2018-07-03"
 data1 = make_datetime(test)
 data2 = make_datetime(test2)
 
 
-make_statistics("Челябинск", data1, data2)
+make_statistics("Москва", data1, data2)
