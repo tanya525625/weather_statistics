@@ -36,19 +36,23 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
             if curr_date_datetime.day >= period_start.day and curr_date_datetime.month >= period_start.month and \
                 curr_date_datetime.day <= period_end.day and curr_date_datetime.month <= period_end.month:
                 #temperature_information
-                curr_temperature = make_float_from_str(curr_date_weather_info[1])
-                curr_year_temperatures.append(curr_temperature)
+                if curr_date_weather_info[1] != '':
+                    curr_temperature = make_float_from_str(curr_date_weather_info[1])
+                    curr_year_temperatures.append(curr_temperature)
                 #wind_information
-                wind_speed.append(float(curr_date_weather_info[3]))
-                wind_directions_set.add(curr_date_weather_info[2])
-                wind_directions.append(curr_date_weather_info[2])
+                if curr_date_weather_info[3] != '':
+                    wind_speed.append(float(curr_date_weather_info[3]))
+                if curr_date_weather_info[2] != '':
+                    wind_directions_set.add(curr_date_weather_info[2])
+                    wind_directions.append(curr_date_weather_info[2])
                 #precipitation_information
-                if curr_date_weather_info[4] == '':
+                if curr_date_weather_info[4] == '' or curr_date_weather_info[4] == '\\n\']':
                     is_precipitation.append(0)
                 else:
                     is_precipitation.append(1)
-                    precipation_list.append(curr_date_weather_info[4])
-                    precipation_set.add(curr_date_weather_info[4])
+                    curr_precipation = curr_date_weather_info[4].replace('.', '')
+                    precipation_list.append(curr_precipation)
+                    precipation_set.add(curr_precipation)
                 
 
         min_temperatures.append(min(curr_year_temperatures))
@@ -94,8 +98,8 @@ def make_float_from_str(data):
     return float(data.replace(',', '.'))
 
 
-test = "10.01.2018"
-test2 = "16.06.2019"
+test = "01.01.2010"
+test2 = "31.12.2019"
 data1 = make_datetime(test)
 data2 = make_datetime(test2)
 
