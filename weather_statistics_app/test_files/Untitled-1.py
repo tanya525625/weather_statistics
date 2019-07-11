@@ -50,7 +50,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
                     is_precipitation.append(0)
                 else:
                     is_precipitation.append(1)
-                    curr_precipation = curr_date_weather_info[4].replace('.', '')
+                    curr_precipation = curr_date_weather_info[4].replace('.', '').rstrip(',').replace('\\n\']', '')
                     precipation_list.append(curr_precipation)
                     precipation_set.add(curr_precipation)
                 
@@ -104,4 +104,4 @@ data1 = make_datetime(test)
 data2 = make_datetime(test2)
 
 
-make_statistics("Санкт-Петербург", data1, data2)
+make_statistics("Челябинск", data1, data2)
