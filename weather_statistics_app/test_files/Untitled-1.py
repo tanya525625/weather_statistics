@@ -12,6 +12,9 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     wind_directions_set = set()
     wind_directions = []
     curr_year_temperatures = []
+    is_precipitation = []
+    precipation_set = set()
+    precipation_list = []
     
     for year in range(period_start.year, period_end.year + 1):
         filename = '.\\' + city + '\\' + str(year) + '.csv'
@@ -39,14 +42,23 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
                 wind_speed.append(float(curr_date_weather_info[3]))
                 wind_directions_set.add(curr_date_weather_info[2])
                 wind_directions.append(curr_date_weather_info[2])
+                #precipitation_information
+                if curr_date_weather_info[4] == '':
+                    is_precipitation.append(0)
+                else:
+                    is_precipitation.append(1)
+                    precipation_list.append(curr_date_weather_info[4])
+                    precipation_set.add(curr_date_weather_info[4])
+                
 
         min_temperatures.append(min(curr_year_temperatures))
         max_temperatures.append(max(curr_year_temperatures))
         avg_temperatures.append(round(sum(curr_year_temperatures)/len(curr_year_temperatures), 2))
-
-    print(min_temperatures)
-    print(max_temperatures)
-    print(avg_temperatures)
+    
+    if (period_end.year - period_start.year) > 1:
+        print(min_temperatures)
+        print(max_temperatures)
+        print(avg_temperatures)
     abs_min = min(min_temperatures)
     abs_max = max(max_temperatures)
 
@@ -58,11 +70,22 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     frequent_direction = max(wind_directions_dict.items(), key=operator.itemgetter(1))[0]
     print(frequent_direction)
 
+    percentage_of_days_with_precipitation = int(round(sum(is_precipitation)/len(is_precipitation), 2) * 100)
+    percentage_of_days_without_precipitation = 100 - percentage_of_days_with_precipitation
+    print(percentage_of_days_with_precipitation)
+    print(percentage_of_days_without_precipitation)
+    precipation_dict = dict.fromkeys(frozenset(precipation_set))
+    for precipation in precipation_dict.keys():
+        precipation_dict[precipation] = precipation_list.count(direction)
+    frequent_precipation = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
+    precipation_dict.pop(frequent_precipation)
+    second_frequent_precipation = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
+    print(frequent_precipation)
+    print(second_frequent_precipation)
+
     
-       
 def make_datetime(date: str):
     date_list = date.split('.')
-    #print(date_list)
     return datetime.datetime(int(date_list[2]), int(date_list[1]), int(date_list[0]))
 
 def make_float_from_str(data):
@@ -72,7 +95,7 @@ def make_float_from_str(data):
 
 
 test = "10.01.2018"
-test2 = "16.03.2019"
+test2 = "16.06.2019"
 data1 = make_datetime(test)
 data2 = make_datetime(test2)
 
