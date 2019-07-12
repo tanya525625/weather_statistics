@@ -7,8 +7,8 @@ import datetime
 import os
  
 
-def receive_statics(request):
-    return render(request, 'weather_statics_app/statics.html') #передать словарь
+def receive_statistics(request):
+    return render(request, 'weather_statistics_app/statistics.html') #передать словарь
 
 def index(request):
     if request.method == "POST":
@@ -17,8 +17,9 @@ def index(request):
         period_end = request.POST.get("period_end")
         period_start = make_datetime(period_start)
         period_end = make_datetime(period_end)
-        make_statistics(city, period_start, period_end)
-        return HttpResponse("<h2>Hello, {0}</h2>".format(period_start))
+        statistics_info = make_statistics(city, period_start, period_end)
+        #return HttpResponse("<h2>Hello, {0}</h2>".format(period_start))
+        return render(request, 'weather_statistics_app/statistics.html', statistics_info)
     else:
         userform = UserForm()
         return render(request, "index.html", {"form": userform})
@@ -38,10 +39,30 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     is_precipitation = []
     precipation_set = set()
     precipation_list = []
+
+    statistics = {
+        'city': city,
+        'period_start': period_start,
+        'period_end': period_end,
+        'temperature_statistics': {
+            'abs_min': None,
+            'abs_max': None,
+            'avg_temperature': None
+        },
+        'precipation_statistics': {
+            'percentage_of_days_with_precipitation': None,
+            'percentage_of_days_without_precipitation': None,
+            'frequent_precipation': None,
+            'second_frequent_precipation': None
+        },
+        'wind_statistics': {
+            'frequent_direction': None,
+            'avg_wind_speed': None
+        }
+    }
     
     for year in range(period_start.year, period_end.year + 1):
         filename = '.\\weather_statistics_app\\cities\\' + city + '\\' + str(year) + '.csv'
-        print(filename)
         opened_file = open(filename)
         file_content = opened_file.readlines()
         opened_file.close()
@@ -57,8 +78,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
             curr_date = str(curr_date).replace(' ', '').replace('[', '')
   
             curr_date_datetime = make_datetime_with_dot(curr_date)
-            if curr_date_datetime.day >= period_start.day and curr_date_datetime.month >= period_start.month and \
-                curr_date_datetime.day <= period_end.day and curr_date_datetime.month <= period_end.month:
+            if curr_date_datetime > period_start and curr_date_datetime < period_end:
                 #temperature_information
                 if curr_date_weather_info[1] != '':
                     curr_temperature = make_float_from_str(curr_date_weather_info[1])
@@ -83,30 +103,31 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
         max_temperatures.append(max(curr_year_temperatures))
         avg_temperatures.append(round(sum(curr_year_temperatures)/len(curr_year_temperatures), 2))
     
-    # if (period_end.year - period_start.year) > 1:
-    #     print(min_temperatures)
-    #     print(max_temperatures)
-    #     print(avg_temperatures)
-    abs_min = min(min_temperatures)
-    abs_max = max(max_temperatures)
+    if (period_end.year - period_start.year) > 1:
+        statistics['temperature_statistics']['avg_max_temperature'] = round(sum(max_temperatures)/len(max_temperatures), 2)
+        statistics['temperature_statistics']['avg_min_temperature'] = round(sum(min_temperatures)/len(min_temperatures), 2)
+    statistics['temperature_statistics']['abs_min'] = min(min_temperatures)
+    statistics['temperature_statistics']['abs_max'] = max(max_temperatures)
+    statistics['temperature_statistics']['avg_temperature'] = round(sum(avg_temperatures)/len(avg_temperatures), 2)
 
-    avg_wind_speed = round(sum(wind_speed)/len(wind_speed), 2)
-
+    statistics['wind_statistics']['avg_wind_speed'] = round(sum(wind_speed)/len(wind_speed), 2)
     wind_directions_dict = dict.fromkeys(frozenset(wind_directions_set))
     for direction in wind_directions_dict.keys():
         wind_directions_dict[direction] = wind_directions.count(direction)
-    frequent_direction = max(wind_directions_dict.items(), key=operator.itemgetter(1))[0]
-
+    statistics['wind_statistics']['frequent_direction'] = max(wind_directions_dict.items(), key=operator.itemgetter(1))[0]
 
     percentage_of_days_with_precipitation = int(round(sum(is_precipitation)/len(is_precipitation), 2) * 100)
-    percentage_of_days_without_precipitation = 100 - percentage_of_days_with_precipitation
-
+    statistics['precipation_statistics']['percentage_of_days_without_precipitation'] = 100 - percentage_of_days_with_precipitation
+    statistics['precipation_statistics']['percentage_of_days_with_precipitation'] = percentage_of_days_with_precipitation
     precipation_dict = dict.fromkeys(frozenset(precipation_set))
     for precipation in precipation_dict.keys():
         precipation_dict[precipation] = precipation_list.count(direction)
     frequent_precipation = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
+    statistics['precipation_statistics']['frequent_precipation'] = frequent_precipation
     precipation_dict.pop(frequent_precipation)
-    second_frequent_precipation = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
+    statistics['precipation_statistics']['second_frequent_precipation'] = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
+    print(statistics)
+    return statistics
 
     
 def make_datetime(date: str):
