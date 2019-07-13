@@ -21,11 +21,14 @@
         {% csrf_token %}
         <div class="w3-row-padding menu">
             <div class="w3-third">
-                <select class="w3-select choose-city" id="city" name="option">
+                <select class="w3-select choose-city" id="city" name="option" required>
                     <option value="" disabled selected>Выберите город</option>
                     <option value="Санкт-Петербург">Санкт-Петербург</option>
                     <option value="Москва">Москва</option>
                     <option value="Челябинск">Челябинск</option>
+                    <option value="Екатеринбург">Екатеринбург</option>
+                    <option value="Владивосток">Владивосток</option>
+                    <option value="Нижний Новгород">Нижний Новгород</option>
                 </select>
             </div>
             <div class="w3-third">        	

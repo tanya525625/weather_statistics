@@ -98,7 +98,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     statistics['precipation_statistics']['frequent_precipation'] = frequent_precipation
     precipation_dict.pop(frequent_precipation)
     statistics['precipation_statistics']['second_frequent_precipation'] = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
-    #print(statistics)
+    print(statistics)
     return statistics
 
     
@@ -116,10 +116,10 @@ def make_float_from_str(data):
     return float(data.replace(',', '.'))
 
 
-test = "2018-04-14"
-test2 = "2019-08-12"
+test = "2018-01-01"
+test2 = "2019-12-31"
 data1 = make_datetime(test)
 data2 = make_datetime(test2)
 
 
-make_statistics("Санкт-Петербург", data1, data2)
+make_statistics("Владивосток", data1, data2)

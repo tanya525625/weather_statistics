@@ -12,31 +12,37 @@
     <link rel="stylesheet" href="{% static 'css/statistics_style.css' %}" type="text/css">      
 </head>
 <body>
-    <div class="statistics-block"> 
-        <div class="temperature-block">
-            <header class="temperature-header"> Температурные характеристики</header>
-            <ul class="temperature-content">
-                <li>Абсолютный минимум за период: {{temperature_statistics.abs_min}}</li>
-                <li>Cредняя температура: {{temperature_statistics.avg_temperature}}</li>
-                <li>Абсолютный максимум за период: {{temperature_statistics.abs_max}}</li>
-            </ul>
+    {% if temperature_statistics.abs_min == None %}
+        <div class="error"> Выберите, пожалуйста, период времени с 01.01.2010 по 13.07.2019 </div>
+    {% else %}
+        <div class="statistics-block"> 
+            <div class="info">Погодная статистика для города {{city}} за период: {{period_start.day}}.{{period_start.month}}.{{period_start.year}}
+                 - {{period_end.day}}.{{period_end.month}}.{{period_end.year}}</div>
+            <div class="temperature-block">
+                <header class="temperature-header"> Температурные характеристики</header>
+                <ul class="temperature-content">
+                    <li>Абсолютный минимум за период: {{temperature_statistics.abs_min}}</li>
+                    <li>Cредняя температура: {{temperature_statistics.avg_temperature}}</li>
+                    <li>Абсолютный максимум за период: {{temperature_statistics.abs_max}}</li>
+                </ul>
+            </div>
+            <div class="precipation-block">
+                <header class="precipation-header"> Информация об осадках</header>
+                <ul class="precipation-content">
+                    <li>Процент числа дней с осадками: {{precipation_statistics.percentage_of_days_with_precipitation}}%</li>
+                    <li>Процент числа дней без осадков: {{precipation_statistics.percentage_of_days_without_precipitation}}%</li>
+                    <li>Самый частый вид осадков: {{precipation_statistics.frequent_precipation}}</li>
+                    <li>Второй самый частый вид осадков: {{precipation_statistics.second_frequent_precipation}}</li>
+                </ul>
+            </div>
+            <div class="wind-block">
+                <header class="wind-header"> Информация о ветре</header>
+                <ul class="wind-content">
+                    <li>Самое частое направление ветра: {{wind_statistics.frequent_direction}}</li>
+                    <li>Средняя скорость ветра: {{wind_statistics.avg_wind_speed}}</li>
+                </ul>
+            </div>
         </div>
-        <div class="precipation-block">
-            <header class="precipation-header"> Информация об осадках</header>
-            <ul class="precipation-content">
-                <li>Процент числа дней с осадками: {{precipation_statistics.percentage_of_days_with_precipitation}}%</li>
-                <li>Процент числа дней без осадков: {{precipation_statistics.percentage_of_days_without_precipitation}}%</li>
-                <li>Самый частый вид осадков: {{precipation_statistics.frequent_precipation}}</li>
-                <li>Второй самый частый вид осадков: {{precipation_statistics.second_frequent_precipation}}</li>
-            </ul>
-        </div>
-        <div class="wind-block">
-            <header class="wind-header"> Информация о ветре</header>
-            <ul class="wind-content">
-                <li>Самое частое направление ветра: {{wind_statistics.frequent_direction}}</li>
-                <li>Средняя скорость ветра: {{wind_statistics.avg_wind_speed}}</li>
-            </ul>
-        </div>
-    </div>
+    {% endif %}
 </body>
 
