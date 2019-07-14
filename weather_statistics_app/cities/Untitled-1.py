@@ -63,6 +63,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
                     wind_directions_set.add(curr_date_weather_info[2])
                     wind_directions.append(curr_date_weather_info[2])
                 #precipitation_information
+                #print(curr_date_weather_info)
                 if curr_date_weather_info[4] == '' or curr_date_weather_info[4] == '\\n\']':
                     is_precipitation.append(0)
                 else:
@@ -116,10 +117,10 @@ def make_float_from_str(data):
     return float(data.replace(',', '.'))
 
 
-test = "2018-01-01"
-test2 = "2019-12-31"
+test = "2010-01-01"
+test2 = "2019-07-13"
 data1 = make_datetime(test)
 data2 = make_datetime(test2)
 
 
-make_statistics("Владивосток", data1, data2)
+make_statistics("Осло", data1, data2)
