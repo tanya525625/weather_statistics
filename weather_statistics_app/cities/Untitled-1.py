@@ -112,15 +112,15 @@ def make_datetime_with_dot(date: str):
     return datetime.datetime(int(date_list[2]), int(date_list[1]), int(date_list[0]))
 
 def make_float_from_str(data):
-    if data[0] == '-': # if negative temperature
+    if data[0] == '-': # if temperature is negative
         return float(data.replace(',', '.').strip("-")) * (-1)
     return float(data.replace(',', '.'))
 
 
-test = "2010-01-01"
-test2 = "2019-07-13"
-data1 = make_datetime(test)
-data2 = make_datetime(test2)
+test = "2019-01-17"
+test2 = "2019-01-15"
+print(data1)
+print(data2)
+print(data2 > data1)
 
-
-make_statistics("Осло", data1, data2)
+#make_statistics("Осло", data1, data2)

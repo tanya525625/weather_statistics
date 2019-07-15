@@ -53,7 +53,10 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
         }
     }
     
-    if (period_start.year >= 2010) and (period_end.year <= 2019):
+    start_date_req = datetime.datetime(2010, 1, 1)
+    end_data_req = datetime.datetime(2019, 7, 13)
+    if (period_start >= start_date_req) and (period_end <= end_data_req) and \
+       (period_start <= period_end):
         for year in range(period_start.year, period_end.year + 1):
             filename = '.\\weather_statistics_app\\cities\\' + city + '\\' + \
                                                         str(year) + '.csv'
@@ -64,34 +67,34 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
 
             curr_year_temperatures.clear()
             for day in range(len(info_about_every_day)):
-                curr_date_weather_info = info_about_every_day[day].split(';')
-                date_without_time_list = str(curr_date_weather_info[0]). \
-                                             replace("'", '').split(' ')
-                curr_date = date_without_time_list[0]
+                weather_info = info_about_every_day[day].split(';')
+                date_without_time = str(weather_info[0]).replace("'", '')
+                date_without_time = date_without_time.split(' ')
+                curr_date = date_without_time[0]
                 if curr_date == '':
-                    curr_date = date_without_time_list[1]
+                    curr_date = date_without_time[1]
                 curr_date = str(curr_date).replace(' ', '').replace('[', '')
     
                 curr_date_datetime = make_datetime_with_dot(curr_date)
                 if curr_date_datetime >= period_start and \
                    curr_date_datetime <= period_end:
                     #  temperature_information
-                    if curr_date_weather_info[1] != '':
-                        curr_temperature = make_float_from_str(curr_date_weather_info[1])
+                    if weather_info[1] != '':
+                        curr_temperature = make_float_from_str(weather_info[1])
                         curr_year_temperatures.append(curr_temperature)
                     #  wind_information
-                    if curr_date_weather_info[3] != '':
-                        wind_speed.append(float(curr_date_weather_info[3]))
-                    if curr_date_weather_info[2] != '':
-                        wind_directions_set.add(curr_date_weather_info[2])
-                        wind_directions.append(curr_date_weather_info[2])
+                    if weather_info[3] != '':
+                        wind_speed.append(float(weather_info[3]))
+                    if weather_info[2] != '':
+                        wind_directions_set.add(weather_info[2])
+                        wind_directions.append(weather_info[2])
                     #  precipitation_information
-                    if curr_date_weather_info[4] == '' or \
-                       curr_date_weather_info[4] == '\\n\']':
+                    if weather_info[4] == '' or \
+                       weather_info[4] == '\\n\']':
                         is_precipitation.append(0)
                     else:
                         is_precipitation.append(1)
-                        curr_precipation = curr_date_weather_info[4].replace('.', '')
+                        curr_precipation = weather_info[4].replace('.', '')
                         precipation_list.append(curr_precipation.rstrip(','). 
                                                 replace('\\n\']', ''))
                         precipation_set.add(curr_precipation)
@@ -103,43 +106,45 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
         
         if (period_end.year - period_start.year) > 1:
             statistics['temperature_statistics']['avg_max_temperature'] =\
-                    round(sum(max_temperatures)/len(max_temperatures), 2)
+                round(sum(max_temperatures) / len(max_temperatures), 2)
             statistics['temperature_statistics']['avg_min_temperature'] =\
-                    round(sum(min_temperatures)/len(min_temperatures), 2)
+                round(sum(min_temperatures) / len(min_temperatures), 2)
         statistics['temperature_statistics']['abs_min'] = min(min_temperatures)
         statistics['temperature_statistics']['abs_max'] = max(max_temperatures)
-        statistics['temperature_statistics']['avg_temperature'] = round(sum(avg_temperatures) /
-                                                                  len(avg_temperatures), 2)
+        statistics['temperature_statistics']['avg_temperature'] = round(sum(
+            avg_temperatures) / len(avg_temperatures), 2)
 
-        statistics['wind_statistics']['avg_wind_speed'] = round(sum(wind_speed) /
-                                                          len(wind_speed), 2)
+        statistics['wind_statistics']['avg_wind_speed'] =\
+            round(sum(wind_speed) / len(wind_speed), 2)
         wind_directions_dict = dict.fromkeys(frozenset(wind_directions_set))
         for direction in wind_directions_dict.keys():
             wind_directions_dict[direction] = wind_directions.count(direction)
-        statistics['wind_statistics']['frequent_direction'] = max(wind_directions_dict.items(), 
-                                                                  key=operator.itemgetter(1))[0]
+        statistics['wind_statistics']['frequent_direction'] = max(
+            wind_directions_dict.items(), key=operator.itemgetter(1))[0]
 
-        percentage_of_days_with_precipitation = int(round(sum(is_precipitation) /
-                                                len(is_precipitation), 2) * 100)
-        statistics['precipation_statistics']['percentage_of_days_without_precipitation'] =\
-                                               100 - percentage_of_days_with_precipitation
-        statistics['precipation_statistics']['percentage_of_days_with_precipitation'] =\
-                                                percentage_of_days_with_precipitation
+        path_to_prec_stats = statistics['precipation_statistics']
+        percent_of_days_with_precip = int(round(sum(is_precipitation) /
+                                          len(is_precipitation), 2) * 100)
+        path_to_prec_stats['percentage_of_days_without_precipitation'] =\
+            100 - percent_of_days_with_precip
+        path_to_prec_stats['percentage_of_days_with_precipitation'] =\
+            percent_of_days_with_precip
         if precipation_set:
-            precipation_dict = dict.fromkeys(frozenset(precipation_set))
-            for precipation in precipation_dict.keys():
-                precipation_dict[precipation] = precipation_list.count(direction)
-            frequent_precipation = max(precipation_dict.items(), key=operator.itemgetter(1))[0]
-            statistics['precipation_statistics']['frequent_precipation'] = frequent_precipation
-            precipation_dict.pop(frequent_precipation)
-            if precipation_dict.keys():
-                statistics['precipation_statistics']['second_frequent_precipation'] =\
-                           max(precipation_dict.items(), key=operator.itemgetter(1))[0]
+            precip_dict = dict.fromkeys(frozenset(precipation_set))
+            for precipation in precip_dict.keys():
+                precip_dict[precipation] = precipation_list.count(direction)
+            freq_precipation = max(precip_dict.items(), 
+                                   key=operator.itemgetter(1))[0]
+            path_to_prec_stats['frequent_precipation'] = freq_precipation
+            precip_dict.pop(freq_precipation)
+            if precip_dict.keys():
+                path_to_prec_stats['second_frequent_precipation'] =\
+                        max(precip_dict.items(), key=operator.itemgetter(1))[0]
             else:
-                statistics['precipation_statistics']['frequent_precipation'] = "Нет осадков"
+                path_to_prec_stats['frequent_precipation'] = "Нет осадков"
         else:
-            statistics['precipation_statistics']['frequent_precipation'] = "Нет осадков"
-            statistics['precipation_statistics']['second_frequent_precipation'] = "Нет осадков"
+            path_to_prec_stats['frequent_precipation'] = "Нет осадков"
+            path_to_prec_stats['second_frequent_precipation'] = "Нет осадков"
         
     return statistics
 
@@ -157,6 +162,6 @@ def make_datetime_with_dot(date: str):
 
 
 def make_float_from_str(data):
-    if data[0] == '-':  # if negative temperature
+    if data[0] == '-':  # if temperature is negative
         return float(data.replace(',', '.').strip("-")) * (-1)
     return float(data.replace(',', '.'))
