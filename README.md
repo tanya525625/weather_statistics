@@ -13,5 +13,5 @@
 Проект реализован на языке программирования Python с использованием библиотеки Django. Для верстки сайта были использованы CSS и язык разметки HTML.
 ### Навигация
 * Логика сайта прописана в файле [views.py](https://github.com/tanya525625/weather_statistics/blob/master/weather_statistics_app/views.py);
-* Файлы, использованные для вёрстки сайта, в [директории]  (https://github.com/tanya525625/weather_statistics/tree/master/weather_statistics_app/templates);
+* Файлы, использованные для вёрстки сайта, в [директории](https://github.com/tanya525625/weather_statistics/tree/master/weather_statistics_app/templates);
 * [Стили и изображения](https://github.com/tanya525625/weather_statistics/tree/master/weather_statistics_app/static).
