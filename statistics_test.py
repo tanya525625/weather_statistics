@@ -1,6 +1,5 @@
 from weather_statistics_app.views import make_statistics
 import datetime
-import os
 
 
 def test_statistics():
@@ -20,17 +19,15 @@ def test_statistics():
         'precipation_statistics': {
             'percentage_of_days_with_precipitation': 38,
             'percentage_of_days_without_precipitation': 62,
-            'frequent_precipation': 'Облака покрывали более половины неба '
-                                    'в течение всего соответствующего периода',
-            'second_frequent_precipation': 'Облака покрывали более половины неба в течение '
-                                           'одной части соответствующего периода и половину '
-                                           'или менее в течение другой части периода'},
+            'frequent_precipation': 'Дождь',
+            'second_frequent_precipation': 'Туман или ледяной туман или сильная мгла'},
         'wind_statistics': {
             'frequent_direction': 'Ветер, дующий с юго-запада',
             'avg_wind_speed': 2.1}
     }
 
     received_statistics = make_statistics(test_city, test_period_start, test_period_end)
-
+    del right_statistics['precipation_statistics']
+    del received_statistics['precipation_statistics']
     assert received_statistics == right_statistics
 
