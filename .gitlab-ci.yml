@@ -36,6 +36,7 @@ build:
 test:
     stage: test
     before_script:
+        - apt install python3.6
         - apk add --no-cache py-pip3
         - pip3 install pytest
     script:
