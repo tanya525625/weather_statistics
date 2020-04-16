@@ -1,4 +1,3 @@
- Сообщаем Gitlab CI, что мы будем использовать Docker при сборке.
 image: docker:latest
 services:
     - docker:dind
