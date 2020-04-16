@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import UserForm
 import operator
 import datetime
+import os
  
 
 def index(request):
@@ -58,8 +59,10 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
     if (period_start >= start_date_req) and (period_end <= end_data_req) and \
        (period_start <= period_end):
         for year in range(period_start.year, period_end.year + 1):
-            filename = '.\\weather_statistics_app\\cities\\' + city + '\\' + \
-                                                        str(year) + '.csv'
+            root_dir = os.getcwd()
+            cities_path = os.path.join(root_dir, 'weather_statistics_app', 'cities')
+            filename = os.path.join(cities_path, city, str(year))
+            filename = f'{filename}.csv'
             opened_file = open(filename)
             file_content = opened_file.readlines()
             opened_file.close()
