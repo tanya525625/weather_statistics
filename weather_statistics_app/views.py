@@ -145,7 +145,7 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
         else:
             path_to_prec_stats['frequent_precipation'] = "Нет осадков"
             path_to_prec_stats['second_frequent_precipation'] = "Нет осадков"
-        
+
     return statistics
 
     

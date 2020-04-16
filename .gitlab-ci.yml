@@ -35,13 +35,10 @@ build:
 # Прогон тестов
 test:
     stage: test
+    before_script:
+        - pip install pytest
     script:
-        # вместо повторной сборки, забираем собранный на предыдущей ступени
-        #  готовый образ из registry
-        - docker-compose pull test
-        # запускаем тесты
-        - docker-compose run test
-
+        - pytest statistics_test.py
 # Выкат на сервер
 deploy:
     stage: deploy
