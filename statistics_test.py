@@ -1,4 +1,4 @@
-from weather_statistics_app.views import make_statistics
+from weather_statistics_app.functions import make_statistics
 import datetime
 
 
