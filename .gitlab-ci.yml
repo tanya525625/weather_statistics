@@ -39,6 +39,9 @@ test:
         - apk add python3
         - apk add --no-cache py3-pip
         - pip3 install -r python-requirments.txt
+        - FROM alpine:3.2
+        - ADD repositories /etc/apk/repositories
+        - RUN apk add --update python python-dev gfortran py-pip build-base py-numpy@community
     script:
         - pytest statistics_test.py
 # Выкат на сервер
