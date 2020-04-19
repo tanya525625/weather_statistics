@@ -19,13 +19,7 @@ def make_float_from_str(data):
     return float(data.replace(',', '.'))
 
 
-def make_datetime(date: str):
-    date_list = date.split('-')
-    return datetime.datetime(int(date_list[0]), int(date_list[1]),
-                             int(date_list[2]))
-
-
-def get_info_from_db(db_path, city, period_start, period_end):
+def get_info_from_db(db_path):
     engine = sa.create_engine(f'sqlite:///{db_path}', echo=True)
     meta = sa.MetaData()
     conn = engine.connect()
@@ -48,14 +42,35 @@ def get_info_from_db(db_path, city, period_start, period_end):
         (days.c.city_name == city) &
         (sa.between(days.c.year, period_start.year, period_end.year)))
     result = conn.execute(s)
+
     return result
 
 
 def make_statistics(city: str, period_start: datetime, period_end: datetime):
     start_date_req = datetime.datetime(2010, 1, 1)
     end_data_req = datetime.datetime(2019, 7, 13)
-    root_dir = os.getcwd()
-    db_path = os.path.join(root_dir, 'weather_statistics_app', 'db', 'cities.db')
+    db_path = os.path.join('db', 'cities.db')
+
+    if (period_start >= start_date_req) and (period_end <= end_data_req) and \
+            (period_start <= period_end):
+        result = get_info_from_db(db_path)
+        statistics = prepare_statistics(result)
+
+    return statistics
+
+
+def prepare_statistics(db_rows):
+    max_temperatures = []
+    min_temperatures = []
+    avg_temperatures = []
+    wind_speed = []
+    wind_directions_set = set()
+    wind_directions = []
+    curr_year_temperatures = []
+    is_precipitation = []
+    precipation_set = set()
+    precipation_list = []
+
     statistics = {
         'city': city,
         'period_start': period_start,
@@ -76,26 +91,6 @@ def make_statistics(city: str, period_start: datetime, period_end: datetime):
             'avg_wind_speed': None
         }
     }
-
-    if (period_start >= start_date_req) and (period_end <= end_data_req) and \
-            (period_start <= period_end):
-        result = get_info_from_db(db_path, city, period_start, period_end)
-        statistics = prepare_statistics(result, period_start, period_end, statistics)
-
-    return statistics
-
-
-def prepare_statistics(db_rows, period_start, period_end, statistics):
-    max_temperatures = []
-    min_temperatures = []
-    avg_temperatures = []
-    wind_speed = []
-    wind_directions_set = set()
-    wind_directions = []
-    curr_year_temperatures = []
-    is_precipitation = []
-    precipation_set = set()
-    precipation_list = []
 
     prev_year = period_start.year
     for row in db_rows:
@@ -133,45 +128,47 @@ def prepare_statistics(db_rows, period_start, period_end, statistics):
             round(np.mean(max_temperatures), 2)
         statistics['temperature_statistics']['avg_min_temperature'] = \
             round(np.mean(min_temperatures), 2)
-    else:
-        min_temperatures = curr_year_temperatures
-        max_temperatures = curr_year_temperatures
-        avg_temperatures = curr_year_temperatures
+        statistics['temperature_statistics']['abs_min'] = min(min_temperatures)
+        statistics['temperature_statistics']['abs_max'] = max(max_temperatures)
+        statistics['temperature_statistics']['avg_temperature'] = round(np.mean(avg_temperatures), 2)
 
-    statistics['temperature_statistics']['abs_min'] = min(min_temperatures)
-    statistics['temperature_statistics']['abs_max'] = max(max_temperatures)
-    statistics['temperature_statistics']['avg_temperature'] = round(np.mean(avg_temperatures), 2)
-    statistics['wind_statistics']['avg_wind_speed'] = \
-        round(np.mean(wind_speed), 2)
-    wind_directions_dict = dict.fromkeys(frozenset(wind_directions_set))
-    for direction in wind_directions_dict.keys():
-        wind_directions_dict[direction] = wind_directions.count(direction)
-    statistics['wind_statistics']['frequent_direction'] = max(
-        wind_directions_dict.items(), key=operator.itemgetter(1))[0]
+        statistics['wind_statistics']['avg_wind_speed'] = \
+            round(np.mean(wind_speed), 2)
+        wind_directions_dict = dict.fromkeys(frozenset(wind_directions_set))
+        for direction in wind_directions_dict.keys():
+            wind_directions_dict[direction] = wind_directions.count(direction)
+        statistics['wind_statistics']['frequent_direction'] = max(
+            wind_directions_dict.items(), key=operator.itemgetter(1))[0]
 
-    path_to_prec_stats = statistics['precipation_statistics']
-    percent_of_days_with_precip = int(round(sum(is_precipitation) /
-                                            len(is_precipitation), 2) * 100)
-    path_to_prec_stats['percentage_of_days_without_precipitation'] = \
-        100 - percent_of_days_with_precip
-    path_to_prec_stats['percentage_of_days_with_precipitation'] = \
-        percent_of_days_with_precip
-    if precipation_set:
-        precip_dict = dict.fromkeys(frozenset(precipation_set))
-        for precipation in precip_dict.keys():
-            precip_dict[precipation] = precipation_list.count(direction)
-        freq_precipation = max(precip_dict.items(),
-                               key=operator.itemgetter(1))[0]
-        path_to_prec_stats['frequent_precipation'] = freq_precipation
-        precip_dict.pop(freq_precipation)
-        if precip_dict.keys():
-            path_to_prec_stats['second_frequent_precipation'] = \
-                max(precip_dict.items(), key=operator.itemgetter(1))[0]
+        path_to_prec_stats = statistics['precipation_statistics']
+        percent_of_days_with_precip = int(round(sum(is_precipitation) /
+                                                len(is_precipitation), 2) * 100)
+        path_to_prec_stats['percentage_of_days_without_precipitation'] = \
+            100 - percent_of_days_with_precip
+        path_to_prec_stats['percentage_of_days_with_precipitation'] = \
+            percent_of_days_with_precip
+        if precipation_set:
+            precip_dict = dict.fromkeys(frozenset(precipation_set))
+            for precipation in precip_dict.keys():
+                precip_dict[precipation] = precipation_list.count(direction)
+            freq_precipation = max(precip_dict.items(),
+                                   key=operator.itemgetter(1))[0]
+            path_to_prec_stats['frequent_precipation'] = freq_precipation
+            precip_dict.pop(freq_precipation)
+            if precip_dict.keys():
+                path_to_prec_stats['second_frequent_precipation'] = \
+                    max(precip_dict.items(), key=operator.itemgetter(1))[0]
+            else:
+                path_to_prec_stats['frequent_precipation'] = "Нет осадков"
         else:
             path_to_prec_stats['frequent_precipation'] = "Нет осадков"
-    else:
-        path_to_prec_stats['frequent_precipation'] = "Нет осадков"
-        path_to_prec_stats['second_frequent_precipation'] = "Нет осадков"
+            path_to_prec_stats['second_frequent_precipation'] = "Нет осадков"
 
-    print(statistics)
     return statistics
+
+
+city = 'Санкт-Петербург'
+period_start = datetime.datetime(2011, 7, 12)
+period_end = datetime.datetime(2014, 3, 7)
+res = make_statistics(city, period_start, period_end)
+print(res)

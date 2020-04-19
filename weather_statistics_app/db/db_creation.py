@@ -38,11 +38,10 @@ def create_day_table(conn, cursor):
     years = tuple(range(2010, 2020))
 
     cursor.execute("DROP TABLE day")
-    cursor.execute("CREATE TABLE day (id INTEGER PRIMARY KEY NOT NULL, time DATETIME, temperature BOOLEAN, "
-                   "winder_direction STRING, winder_speed BOOLEAN, precipitation STRING, "
+    cursor.execute("CREATE TABLE day (id INTEGER PRIMARY KEY NOT NULL, time DATETIME, temperature STRING, "
+                   "winder_direction STRING, winder_speed DOUBLE, precipitation STRING, "
                    "city_name STRING REFERENCES city (name), year INTEGER REFERENCES year (year));")
 
-    values = []
     id = 0
     dir_path = os.path.join('..', 'cities')
     for city in cities:
@@ -55,10 +54,10 @@ def create_day_table(conn, cursor):
             df.reset_index(level=0, inplace=True)
             df = df.assign(city=[city[0]] * df_rows_count)
             df = df.assign(year=[year] * df_rows_count)
-            values.append(df.values.tolist())
+            cursor.executemany("INSERT INTO day VALUES (?,?,?,?,?,?,?,?)", df.values.tolist())
             id = id + df_rows_count
 
-    cursor.executemany("INSERT INTO day VALUES (?,?,?,?,?,?,?,?)", values[0])
+
     conn.commit()
 
 
@@ -67,4 +66,6 @@ def get_posts(table_name):
         cursor.execute(f"SELECT * FROM {table_name}")
         return cursor.fetchall()
 
+
+create_day_table(conn, cursor)
 

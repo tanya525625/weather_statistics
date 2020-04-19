@@ -2,7 +2,7 @@
 
 
 body {
-    background-image: url(../img/forest.jpg); 
+    background-image: url(../img/forest.jpg) no-repeat;
 }
 
 .info{
