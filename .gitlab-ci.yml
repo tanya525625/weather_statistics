@@ -41,10 +41,12 @@ test:
         - pip3 install -r python-requirments.txt
     script:
         - pytest statistics_test.py
-        - pytest --cov=weather_statistics_app -vv --cov-config .coverage_config
+        - pipenv install --dev --system
+        - pytest --cov=weather_statistics_app -vv --cov-config .coverage_config && exit
     artifacts:
         paths:
             - .coverage_config
+            - coverage
 # Выкат на сервер
 deploy:
     stage: deploy
