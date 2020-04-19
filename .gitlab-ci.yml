@@ -41,7 +41,7 @@ test:
         - pip3 install -r python-requirments.txt
     script:
         - pytest statistics_test.py
-        - pytest --cov=weather_statistics_app -vv --cov-config statistics_test.py/.coverage_config
+        - pytest --cov=weather_statistics_app -vv --cov-config .coverage_config
 # Выкат на сервер
 deploy:
     stage: deploy
