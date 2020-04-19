@@ -4,7 +4,6 @@ import operator
 from statistics import mean
 
 import sqlalchemy as sa
-import numpy
 
 
 def make_datetime_with_dot(date: str):
