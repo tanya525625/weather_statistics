@@ -22,6 +22,7 @@ before_script:
     - pip install docker-compose==1.9.0
     # логин в Gitlab Docker registry
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - $cicdReportsFolderPath = Join-Path (Get-Location) "cicd_reports"
 
 # Сборка Docker-образа
 build:
@@ -40,13 +41,13 @@ test:
         - apk add --no-cache py3-pip
         - pip3 install -r python-requirments.txt
     script:
+        - $reportFolder = Join-Path $cicdReportsFolderPath "pytest"
         - pytest statistics_test.py
-        - pytest --cov=weather_statistics_app -vv --cov-config .coverage_config && exit
-    coverage: '/Code coverage: \d+\.\d+/'
-    artifacts:
-        paths:
-            - .coverage_config
-            - coverage
+        - pytest --cov=weather_statistics_app  --cov-report=html:$reportFolder
+        - $coverageLine = (Get-Content (Join-Path $reportFolder index.html) | Select-String "pc_cov").line
+        - $coverageString = ($coverageLine -replace "<[^>]*>", "").trim()
+        - Write-Output "Total Coverage = $coverageString"
+    coverage: '/^(?i)(TOTAL).*\s+(\d+\%)$/'
 # Выкат на сервер
 deploy:
     stage: deploy
