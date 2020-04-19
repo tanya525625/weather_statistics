@@ -43,6 +43,7 @@ test:
         - pytest statistics_test.py
         - pipenv install --dev --system
         - pytest --cov=weather_statistics_app -vv --cov-config .coverage_config && exit
+    coverage: '/Code coverage: \d+\.\d+/'
     artifacts:
         paths:
             - .coverage_config
