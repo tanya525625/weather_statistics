@@ -48,22 +48,23 @@ test:
         - $coverageString = ($coverageLine -replace "<[^>]*>", "").trim()
         - Write-Output "Total Coverage = $coverageString"
     coverage: '/^(?i)(TOTAL).*\s+(\d+\%)$/'
-# Выкат на сервер
-deploy:
-    stage: deploy
-    # выкатываем только ветку master
-    only:
-        - master
-    # для этой ступени другие команды инициализации
-    before_script:
-        # устанавливаем зависимости Fabric, bash и rsync
-        - apk add --no-cache openssh-client py-pip py-crypto bash rsync
-        # устанавливаем Fabric
-        - pip install fabric==1.12.0
-        # добавляем приватный ключ для выката
-        - eval $(ssh-agent -s)
-        - bash -c 'ssh-add <(echo "$DEPLOY_KEY")'
-        - mkdir -p ~/.ssh
-        - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    script:
-        - fab -H $DEPLOY_ADDR deploy
+    
+## Выкат на сервер
+#deploy:
+#    stage: deploy
+#    # выкатываем только ветку master
+#    only:
+#        - master
+#    # для этой ступени другие команды инициализации
+#    before_script:
+#        # устанавливаем зависимости Fabric, bash и rsync
+#        - apk add --no-cache openssh-client py-pip py-crypto bash rsync
+#        # устанавливаем Fabric
+#        - pip install fabric==1.12.0
+#        # добавляем приватный ключ для выката
+#        - eval $(ssh-agent -s)
+#        - bash -c 'ssh-add <(echo "$DEPLOY_KEY")'
+#        - mkdir -p ~/.ssh
+#        - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#    script:
+#        - fab -H $DEPLOY_ADDR deploy
