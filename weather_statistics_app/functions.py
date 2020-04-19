@@ -1,6 +1,7 @@
 import os
 import datetime
 import operator
+from statistics import mean
 
 import sqlalchemy as sa
 
@@ -109,7 +110,7 @@ def prepare_statistics(db_rows, period_start, period_end, statistics):
                     prev_year = curr_year
                     min_temperatures.append(min(curr_year_temperatures))
                     max_temperatures.append(max(curr_year_temperatures))
-                    avg_temperatures.append(average(curr_year_temperatures))
+                    avg_temperatures.append(mean(curr_year_temperatures))
                     curr_year_temperatures.clear()
 
             # wind directions statistics
@@ -129,9 +130,9 @@ def prepare_statistics(db_rows, period_start, period_end, statistics):
 
     if (period_end.year - period_start.year) > 1:
         statistics['temperature_statistics']['avg_max_temperature'] = \
-            round(average(max_temperatures), 2)
+            round(mean(max_temperatures), 2)
         statistics['temperature_statistics']['avg_min_temperature'] = \
-            round(average(min_temperatures), 2)
+            round(mean(min_temperatures), 2)
     else:
         min_temperatures = curr_year_temperatures
         max_temperatures = curr_year_temperatures
@@ -139,9 +140,9 @@ def prepare_statistics(db_rows, period_start, period_end, statistics):
 
     statistics['temperature_statistics']['abs_min'] = min(min_temperatures)
     statistics['temperature_statistics']['abs_max'] = max(max_temperatures)
-    statistics['temperature_statistics']['avg_temperature'] = round(average(avg_temperatures), 2)
+    statistics['temperature_statistics']['avg_temperature'] = round(mean(avg_temperatures), 2)
     statistics['wind_statistics']['avg_wind_speed'] = \
-        round(average(wind_speed), 2)
+        round(mean(wind_speed), 2)
     wind_directions_dict = dict.fromkeys(frozenset(wind_directions_set))
     for direction in wind_directions_dict.keys():
         wind_directions_dict[direction] = wind_directions.count(direction)
@@ -173,7 +174,3 @@ def prepare_statistics(db_rows, period_start, period_end, statistics):
         path_to_prec_stats['second_frequent_precipation'] = "Нет осадков"
 
     return statistics
-
-
-def average(lst):
-    return sum(lst) / len(lst)
