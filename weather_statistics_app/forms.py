@@ -1,5 +1,4 @@
 from django import forms
-import cgi
  
 
 class UserForm(forms.Form):
