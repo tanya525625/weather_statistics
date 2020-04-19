@@ -41,7 +41,7 @@ test:
         - pip3 install -r python-requirments.txt
     script:
         - pytest statistics_test.py
-        - pytest —cov=weather_statistics_app statistics_test.py
+        - pytest --cov=weather_statistics_app statistics_test.py
     coverage: '/^(?i)(TOTAL).*\s+(\d+\%)$/'
 
 ## Выкат на сервер
