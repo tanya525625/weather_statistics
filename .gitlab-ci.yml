@@ -47,7 +47,6 @@ test:
         paths:
             - .coverage_config
             - coverage
-     coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
 # Выкат на сервер
 deploy:
     stage: deploy
