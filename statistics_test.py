@@ -13,14 +13,14 @@ def test_statistics():
         'temperature_statistics': {
             'abs_min': -22.3,
             'abs_max': 32.4,
-            'avg_temperature': 4.71,
-            'avg_max_temperature': 25.53,
-            'avg_min_temperature': -17.73},
+            'avg_temperature': 7.3,
+            'avg_max_temperature': 31.57,
+            'avg_min_temperature': -16.87},
         'precipation_statistics': {
             'percentage_of_days_with_precipitation': 38,
             'percentage_of_days_without_precipitation': 62,
-            'frequent_precipation': 'Дождь',
-            'second_frequent_precipation': 'Туман или ледяной туман или сильная мгла'},
+            'frequent_precipation': 'Снег и/или другие виды твердых осадков',
+            'second_frequent_precipation': 'Туман или ледяной туман или сильная мгла.'},
         'wind_statistics': {
             'frequent_direction': 'Ветер, дующий с юго-запада',
             'avg_wind_speed': 2.1}
