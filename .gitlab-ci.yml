@@ -47,7 +47,11 @@ test:
 deploy:
   stage: deploy
   script:
-  - gem install dpl
-  - dpl --provider=heroku --app=weather_statistics1 --api-key=$HEROKU_STAGING_API_KEY
+  - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
+  - git push heroku master
+  - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
+  environment:
+  name: staging
+  url: https://weather-statistics1.herokuapp.com/
   only:
   - master
