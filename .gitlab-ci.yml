@@ -38,7 +38,7 @@ test:
     before_script:
         - apk add python3
         - apk add --no-cache py3-pip
-        - pip3 install -r python-requirments.txt
+        - pip3 install -r requirements.txt
     script:
         - pytest statistics_test.py
         - pytest --cov=weather_statistics_app statistics_test.py
