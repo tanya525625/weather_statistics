@@ -51,7 +51,7 @@ deploy:
   - git push heroku master
   - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
   environment:
-  name: staging
-  url: https://weather-statistics1.herokuapp.com/
+    name: staging
+    url: https://weather-statistics1.herokuapp.com/
   only:
   - master
