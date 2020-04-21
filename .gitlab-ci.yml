@@ -3,7 +3,7 @@ services:
     - docker:dind
 
 stages:
-#    - build
+    - build
     - test
     - deploy
 
@@ -26,14 +26,14 @@ before_script:
 #    - usermod -aG docker ${user}
 #    - export DOCKER_HOST=127.0.0.1:2375
 
-## Сборка Docker-образа
-#build:
-#    stage: build
-#    script:
-#        # собственно сборка
-#        - docker-compose build
-#        # отправка собранного в registry
-#        - docker-compose push
+# Сборка Docker-образа
+build:
+    stage: build
+    script:
+        # собственно сборка
+        - docker-compose build
+        # отправка собранного в registry
+        - docker-compose push
 
 # Прогон тестов
 test:
