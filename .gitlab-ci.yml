@@ -65,9 +65,7 @@ deploy:
 #    - git config --global user.email "$email"
 #    - git config --global user.name "$name"
 #    - git commit -m "deploy"
-    - add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./"
-    - curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
-    - apt-get install -y heroku
+    - snap install heroku --classic
     - heroku login
     - heroku git:remote -a weather-statistics1
 #    - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
