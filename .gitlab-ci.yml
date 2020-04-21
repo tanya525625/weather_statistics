@@ -57,7 +57,7 @@ deploy:
     - git config --global user.name "$name"
     - git commit -m "deploy"
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
-    - snap install heroku --classic
+    - heroku login
     - git push heroku HEAD:master
     - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
   environment:
