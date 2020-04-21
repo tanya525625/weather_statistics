@@ -58,7 +58,7 @@ before_script:
 deploy:
   stage: deploy
   script:
-    - apt install git
+    - apt install -y git
 #    - touch file
 #    - git init
 #    - git add .
@@ -67,7 +67,7 @@ deploy:
 #    - git commit -m "deploy"
     - add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./"
     - curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
-    - apt-get install heroku
+    - apt-get install -y heroku
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
     - heroku login
     - git push heroku HEAD:master
