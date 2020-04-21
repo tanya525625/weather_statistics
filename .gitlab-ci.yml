@@ -1,4 +1,4 @@
-image: docker:latest
+image: ubuntu:18.04
 services:
     - docker:dind
 
