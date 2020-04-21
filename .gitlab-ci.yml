@@ -87,7 +87,7 @@ deploy:
 #    - heroku login -i
 #    - tanya_postcrossing@mail.ru
 #    - Tc9z5y543254325
-    - heroku git:remote -a $HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
+    - heroku git:remote -a weather-statistics1
 #    - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
     - git push heroku HEAD:master
     - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
