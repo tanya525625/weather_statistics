@@ -17,11 +17,13 @@ stages:
 #  ступеней осуществляется в чистом Docker-контейнере, который пересоздаётся каждый раз.
 before_script:
     # установка pip
-    - apk add --no-cache py-pip
+    - apt-get -y install python3-pip
     # установка docker-compose
-    - pip install docker-compose==1.9.0
+    - pip3 install docker-compose==1.9.0
     # логин в Gitlab Docker registry
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - apt-get -y install python3-psycopg2
+    - pip3 install -r requirements.txt
 
 ## Сборка Docker-образа
 #build:
