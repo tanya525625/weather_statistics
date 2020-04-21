@@ -23,17 +23,15 @@ before_script:
     - pip3 install docker-compose==1.9.0
     # логин в Gitlab Docker registry
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - usermod -aG docker ${user}
-    - export DOCKER_HOST=127.0.0.1:2375
 
-# Сборка Docker-образа
-build:
-    stage: build
-    script:
-        # собственно сборка
-        - docker-compose build
-        # отправка собранного в registry
-        - docker-compose push
+## Сборка Docker-образа
+#build:
+#    stage: build
+#    script:
+#        # собственно сборка
+#        - docker-compose build
+#        # отправка собранного в registry
+#        - docker-compose push
 
 # Прогон тестов
 test:
