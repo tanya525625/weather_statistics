@@ -50,6 +50,10 @@ deploy:
   stage: deploy
   script:
     - apk add git
+    - touch file
+    - git init
+    - git add .
+    - git commit -m "deploy"
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
     - git push heroku master
     - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
