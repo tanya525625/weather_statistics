@@ -68,9 +68,10 @@ deploy:
 #    - git commit -m "deploy"
     - apt install -y curl
     - curl https://cli-assets.heroku.com/install.sh | sh
-    - heroku login -i
-    - tanya_postcrossing@mail.ru
-    - Tc9z5y543254325
+    - echo "tanya_postcrossing@mail.ru Tc9z5y543254325" | ./heroku login -i
+#    - heroku login -i
+#    - tanya_postcrossing@mail.ru
+#    - Tc9z5y543254325
     - heroku git:remote -a weather-statistics1
 #    - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
     - git push heroku HEAD:master
