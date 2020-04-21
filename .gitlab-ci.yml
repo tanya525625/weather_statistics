@@ -10,6 +10,9 @@ stages:
 before_script:
     # установка pip
     - apt-get update
+    - apt-get -y install python3-pip
+    - apt-get -y install python3-psycopg2
+    - pip3 install -r requirements.txt
 #    - apt install linux-image-extra-$(uname -r) linux-image-extra-virtual
 #    - apt install apt-transport-https ca-certificates curl software-properties-common
 #    - url -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -20,9 +23,6 @@ before_script:
     - pip3 install docker-compose==1.9.0
     # логин в Gitlab Docker registry
 #    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - apt-get -y install python3-pip
-    - apt-get -y install python3-psycopg2
-    - pip3 install -r requirements.txt
 
 # Сборка Docker-образа
 build:
