@@ -77,7 +77,7 @@ deploy:
     - login tanya_postcrossing@mail.ru
     - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
     - EOF
-      - chmod 600 ~/.netrc
+    - chmod 600 ~/.netrc
 #      - heroku git:remote --app weather-statistics1
 #    - command<<'EOF'
 #    - heroku login -i
