@@ -69,7 +69,7 @@ deploy:
     - apt install -y curl
     - curl https://cli-assets.heroku.com/install.sh | sh
 #    - echo "tanya_postcrossing@mail.ru Tc9z5y543254325" | heroku login -i
-    - command 'EOF'
+    - command<<'EOF'
     - heroku login -i
     - [tanya_postcrossing@mail.ru]
     - [Tc9z5y543254325]
