@@ -69,17 +69,16 @@ deploy:
     - apt install -y curl
     - curl https://cli-assets.heroku.com/install.sh | sh
 #    - echo "tanya_postcrossing@mail.ru Tc9z5y543254325" | heroku login -i
-    - |
-      cat >~/.netrc <<EOF
-      machine api.heroku.com
-        login tanya_postcrossing@mail.ru
-        password 0108ff9e-62f8-4286-9ebf-8f7c04c241f4
-      machine git.heroku.com
-        login tanya_postcrossing@mail.ru
-        password 0108ff9e-62f8-4286-9ebf-8f7c04c241f4
-      EOF
+    - cat >~/.netrc <<EOF
+    - machine api.heroku.com
+    - login tanya_postcrossing@mail.ru
+    - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
+    - machine git.heroku.com
+    - login tanya_postcrossing@mail.ru
+    - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
+    - EOF
       - chmod 600 ~/.netrc
-      - heroku git:remote --app weather-statistics1
+#      - heroku git:remote --app weather-statistics1
 #    - command<<'EOF'
 #    - heroku login -i
 #    - [tanya_postcrossing@mail.ru]
