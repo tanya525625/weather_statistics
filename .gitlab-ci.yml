@@ -11,27 +11,18 @@ before_script:
     # установка pip
     - apt-get update
     - apt install -y curl
-    - apt install linux-image-extra-$(uname -r) linux-image-extra-virtual
-    - apt install apt-transport-https ca-certificates curl software-properties-common
-    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-    - apt update && apt-cache policy docker-ce
-    - apt install -y docker-ce
-    - curl -fsSL https://get.docker.com -o get-docker.sh
-    - sh get-docker.sh
-    # установка docker-compose
-    - pip3 install docker-compose==1.9.0
-    # логин в Gitlab Docker registry
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-
-## Сборка Docker-образа
-#build:
-#    stage: build
-#    script:
-#        # собственно сборка
-#        - docker-compose build
-#        # отправка собранного в registry
-#        - docker-compose push
+#    - apt install linux-image-extra-$(uname -r) linux-image-extra-virtual
+#    - apt install apt-transport-https ca-certificates curl software-properties-common
+#    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#    - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+#    - apt update && apt-cache policy docker-ce
+#    - apt install -y docker-ce
+#    - curl -fsSL https://get.docker.com -o get-docker.sh
+#    - sh get-docker.sh
+#    # установка docker-compose
+#    - pip3 install docker-compose==1.9.0
+#    # логин в Gitlab Docker registry
+#    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
 
 # Прогон тестов
 test:
