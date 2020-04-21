@@ -32,25 +32,27 @@ build:
         # отправка собранного в registry
         - docker-compose push
 
-# Прогон тестов
-test:
-    stage: test
-    before_script:
-        - apk add python3
-        - apk add --no-cache py3-pip
-        - apk update && apk add postgresql-dev gcc python3-dev musl-dev
-        - pip3 install psycopg2-binary
-        - pip3 install -r requirements.txt
-    script:
-        - pytest statistics_test.py
-        - pytest --cov=weather_statistics_app statistics_test.py
-    coverage: '/^(?i)(TOTAL).*\s+(\d+\%)$/'
+## Прогон тестов
+#test:
+#    stage: test
+#    before_script:
+#        - apk add python3
+#        - apk add --no-cache py3-pip
+#        - apk update && apk add postgresql-dev gcc python3-dev musl-dev
+#        - pip3 install psycopg2-binary
+#        - pip3 install -r requirements.txt
+#    script:
+#        - pytest statistics_test.py
+#        - pytest --cov=weather_statistics_app statistics_test.py
+#    coverage: '/^(?i)(TOTAL).*\s+(\d+\%)$/'
 
 deploy:
   stage: deploy
   script:
     - apk add git
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
+    - git add .
+    - git commit -am "deploy"
     - git push heroku origin master
     - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
   environment:
