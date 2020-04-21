@@ -9,6 +9,7 @@ stages:
 
 before_script:
     # установка pip
+    - apt-get update
     - apt install -y curl
 #    - apt install linux-image-extra-$(uname -r) linux-image-extra-virtual
 #    - apt install apt-transport-https ca-certificates curl software-properties-common
