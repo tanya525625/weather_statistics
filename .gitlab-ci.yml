@@ -23,14 +23,14 @@ before_script:
     # логин в Gitlab Docker registry
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
 
-# Сборка Docker-образа
-build:
-    stage: build
-    script:
-        # собственно сборка
-        - docker-compose build
-        # отправка собранного в registry
-        - docker-compose push
+## Сборка Docker-образа
+#build:
+#    stage: build
+#    script:
+#        # собственно сборка
+#        - docker-compose build
+#        # отправка собранного в registry
+#        - docker-compose push
 
 ## Прогон тестов
 #test:
@@ -51,7 +51,7 @@ deploy:
   script:
     - apk add git
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
-    - git push heroku origin master
+    - git push heroku master
     - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
   environment:
     name: staging
