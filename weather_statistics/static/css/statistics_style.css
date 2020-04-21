@@ -17,7 +17,6 @@ body {
 .error {
     color: white;
     background-color: #058E53;
-    background-image: url('error.png');
     font-size: 3em;
     opacity: 0.7;
     width: 50%;

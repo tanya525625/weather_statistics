@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ SECRET_KEY = '0==jkrtizjikavzlm_6r_e(4$yamxb)2+ukjrph(wv$fs5ac@!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['weather-statistics1.herokuapp.com']
 
 
 # Application definition
@@ -118,11 +119,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+# STATIC_URL = '/app/weather_statistics_app/static/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
-STATICFILES_DIRS = [os.path.join(os.path.dirname(BASE_DIR), 'weather_statistics', 'weather_statistics_app', 'static'), ]
-STATIC_URL = '/static/'
+# STATICFILES_DIRS = [os.path.join('weather_statistics_app', 'static')]
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+django_heroku.settings(locals())
