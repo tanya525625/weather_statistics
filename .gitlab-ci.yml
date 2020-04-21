@@ -59,25 +59,25 @@ before_script:
 deploy:
   stage: deploy
   script:
-    - apt install -y git
+#    - apt install -y git
 #    - touch file
 #    - git init
 #    - git add .
 #    - git config --global user.email "$email"
 #    - git config --global user.name "$name"
 #    - git commit -m "deploy"
-    - apt install -y curl
-    - curl https://cli-assets.heroku.com/install.sh | sh
+#    - apt install -y curl
+#    - curl https://cli-assets.heroku.com/install.sh | sh
 #    - echo "tanya_postcrossing@mail.ru Tc9z5y543254325" | heroku login -i
-    - cat >~/.netrc <<EOF
-    - machine api.heroku.com
-    - login tanya_postcrossing@mail.ru
-    - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
-    - machine git.heroku.com
-    - login tanya_postcrossing@mail.ru
-    - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
-    - EOF
-    - chmod 600 ~/.netrc
+#    - cat >~/.netrc <<EOF
+#    - machine api.heroku.com
+#    - login tanya_postcrossing@mail.ru
+#    - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
+#    - machine git.heroku.com
+#    - login tanya_postcrossing@mail.ru
+#    - password d4d5e873-685c-4b6a-ba9a-1a3a973358f1
+#    - EOF
+#    - chmod 600 ~/.netrc
 #      - heroku git:remote --app weather-statistics1
 #    - command<<'EOF'
 #    - heroku login -i
@@ -87,10 +87,14 @@ deploy:
 #    - heroku login -i
 #    - tanya_postcrossing@mail.ru
 #    - Tc9z5y543254325
-    - heroku git:remote -a weather-statistics1
+#    - heroku git:remote -a weather-statistics1
 #    - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
-    - git push heroku HEAD:master
-    - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
+#    - git push heroku HEAD:master
+#    - echo "Deployed to Staging Server https://weather-statistics1.herokuapp.com"
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=gitlab-ci-python-test-staging --api-key=$HEROKU_STAGING_API_KEY
   environment:
     name: staging
     url: https://weather-statistics1.herokuapp.com/
