@@ -66,8 +66,8 @@ deploy:
 #    - git config --global user.email "$email"
 #    - git config --global user.name "$name"
 #    - git commit -m "deploy"
-    - apt install snapd
-    - snap install heroku --classic
+    - apt install -y snapd
+    - snap install -y heroku --classic
     - heroku login
     - heroku git:remote -a weather-statistics1
 #    - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
