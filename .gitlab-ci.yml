@@ -59,7 +59,7 @@ before_script:
 deploy:
   stage: deploy
   script:
-#    - apt install -y git
+    - apt install -y git
 #    - touch file
 #    - git init
 #    - git add .
