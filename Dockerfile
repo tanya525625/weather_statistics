@@ -4,6 +4,6 @@ COPY requirements.txt src/
 WORKDIR /src/
 RUN apt-get update
 RUN apt-get -y install python3-pip
-RUN pip3 install psycopg2-binary
+RUN apt-get -y install python3-psycopg2
 RUN pip3 install -r requirements.txt
 ADD . /src/
