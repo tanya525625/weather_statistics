@@ -50,13 +50,16 @@ deploy:
   stage: deploy
   script:
     - apt-get update
-    - apk add git
-    - touch file
-    - git init
-    - git add .
-    - git config --global user.email "$email"
-    - git config --global user.name "$name"
-    - git commit -m "deploy"
+    - apt install git
+#    - touch file
+#    - git init
+#    - git add .
+#    - git config --global user.email "$email"
+#    - git config --global user.name "$name"
+#    - git commit -m "deploy"
+    - add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./"
+    - curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
+    - apt-get install heroku
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
     - heroku login
     - git push heroku HEAD:master
