@@ -1,5 +1,6 @@
 body {
     background-image: url(../img/background2.jpg);
+    background-size: 100%;
 }
 
 .btn-success{

@@ -3,6 +3,7 @@
 
 body {
     background-image: url(../img/forest.jpg);
+    background-size: 100%;
 }
 
 .info{
