@@ -53,6 +53,8 @@ deploy:
     - touch file
     - git init
     - git add .
+    - git config --global user.email "$email"
+    - git config --global user.name "$name"
     - git commit -m "deploy"
     - git remote add heroku https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/weather-statistics1.git
     - git push heroku master
